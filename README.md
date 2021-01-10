@@ -1,6 +1,7 @@
 # Chess application
-
-![image](https://user-images.githubusercontent.com/74305289/104131799-742e2580-5381-11eb-8fc3-89776c666d27.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/74305289/104131799-742e2580-5381-11eb-8fc3-89776c666d27.png" alt="Sublime's custom image"/>
+</p>
 
 ## Description
 - The application is built on top of object oriented programming and layered architecture
