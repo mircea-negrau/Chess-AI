@@ -6,7 +6,7 @@
 - Optimal depth for the application is depth 4! Higher depth will take substantially more time to receive an answer. Lower depth will have a quicker but less accurate response
 - The principal interface of the application is the GUI, although the application can be started using the console.
 
-![image](https://user-images.githubusercontent.com/72079402/104131761-24e7f500-5381-11eb-9aea-b77f6d440bab.png)
+![image](https://user-images.githubusercontent.com/74305289/104131799-742e2580-5381-11eb-8fc3-89776c666d27.png)
 
 ## AI Description
 - The chess engine works using the MinMax Algoritm, to which the Alpha-Beta pruning was applied.
