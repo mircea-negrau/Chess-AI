@@ -6,6 +6,8 @@
 - Optimal depth for the application is depth 4! Higher depth will take substantially more time to receive an answer. Lower depth will have a quicker but less accurate response
 - The principal interface of the application is the GUI, although the application can be started using the console.
 
+![image](https://user-images.githubusercontent.com/72079402/104131761-24e7f500-5381-11eb-9aea-b77f6d440bab.png)
+
 ## AI Description
 - The chess engine works using the MinMax Algoritm, to which the Alpha-Beta pruning was applied.
 - The chessboard evaluation is computed using piece values, piece mobility values and piece placement values. That means that the more valuable a piece is (King, Queen, Rook, Bishop, Knight, Pawn), the more mobility it has (available squares to move to) and the more well placed it is on the chessboard the more valuable it is.
