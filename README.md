@@ -13,5 +13,5 @@
 - The chess engine avoids checkmate whenever possible. It also checkmates whenever possible, avoiding stalemates. (With a depth of 4 moves)
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/74305289/104131799-742e2580-5381-11eb-8fc3-89776c666d27.png" alt="Sublime's custom image"/>
+  <img src="https://user-images.githubusercontent.com/74305289/105626268-40e69e80-5e37-11eb-86a1-295562d7901a.png" alt="Chess game screenshot"/>
 </p>
