@@ -113,7 +113,7 @@ class MoveServiceTest(unittest.TestCase):
 
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         self.game.get_human_move(self.game.current_player, 1, 1, 1, 2)
         self.game.get_undo_performed()
 
@@ -125,20 +125,20 @@ class MoveServiceTest(unittest.TestCase):
         assert self.game.get_human_move(self.game.current_player, 8, 8, 8, 8) is False
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         assert self.game.get_human_move(self.game.current_player, 1, 1, 2, 3) is False
         assert self.game.get_human_move(self.game.current_player, 1, 5, 8, 8) is False
         assert self.game.get_human_move(self.game.current_player, 2, 5, 1, 8) is False
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Fail_castling_test")
+                         board_type="Fail Castling")
         assert self.game.get_human_move(self.game.current_player, 1, 5, 1, 8) is False
         assert self.game.get_human_move(self.game.current_player, 6, 7, 8, 7) is False
 
     def test_get_castling_move_tested(self):
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         self.game.get_human_move(self.game.current_player, 1, 1, 1, 2)
         self.game.get_human_move(self.game.current_player, 8, 8, 5, 5)
         initial_square = self.game.board.get_square(1, 5)
@@ -149,11 +149,11 @@ class MoveServiceTest(unittest.TestCase):
     def test_get_long_castling_tested(self):
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         assert self.game.get_human_move(self.game.current_player, 1, 5, 1, 3) is True
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Fail_castling_test")
+                         board_type="Fail Castling")
         self.game.get_next_player_turn()
         assert self.game.get_human_move(self.game.current_player, 8, 1, 8, 4) is True
         assert self.game.get_human_move(self.game.current_player, 1, 5, 1, 3) is False
@@ -165,7 +165,7 @@ class MoveServiceTest(unittest.TestCase):
     def test_get_short_castling_tested(self):
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         assert self.game.get_human_move(self.game.current_player, 1, 5, 1, 7) is True
         self.game.get_undo_performed()
         assert self.game.get_human_move(self.game.current_player, 2, 2, 4, 2) is True
@@ -175,7 +175,7 @@ class MoveServiceTest(unittest.TestCase):
     def test_get_captured_piece_for_pawn_captures(self):
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         self.game.get_next_player_turn()
         assert self.game.get_human_move(self.game.current_player, 7, 3, 6, 3) is True
         assert self.game.get_human_move(self.game.current_player, 5, 4, 6, 3) is True
@@ -185,7 +185,7 @@ class MoveServiceTest(unittest.TestCase):
     def test_get_pawn_promotion_move_tested(self):
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         self.game.get_next_player_turn()
         assert self.game.get_human_move(self.game.current_player, 7, 3, 5, 3) is True
         assert self.game.get_human_move(self.game.current_player, 5, 4, 6, 3) is True
@@ -207,7 +207,7 @@ class MoveServiceTest(unittest.TestCase):
     def test_get_en_passant_move(self):
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=1,
-                         board_type="Castling_Test")
+                         board_type="Castling")
         assert self.game.get_human_move(self.game.current_player, 2, 2, 4, 2) is True
         assert self.game.get_human_move(self.game.current_player, 4, 3, 3, 2) is True
         self.game.get_undo_performed()
@@ -232,33 +232,49 @@ class ComputerMoveServiceTest(unittest.TestCase):
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=2)
 
     def test_get_minimax(self):
+        assert self.game.current_player.is_white is True
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is False
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is True
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=2,
                          board_type="Check")
+        assert self.game.current_player.is_white is True
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is False
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is True
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is False
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is True
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=3,
-                         board_type="One-step-to-check-for-white")
+                         board_type="Check in One for White")
+        assert self.game.current_player.is_white is True
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is False
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=3,
-                         board_type="One-step-to-check-for-white")
+                         board_type="Check in One for White")
         self.game.get_next_player_turn()
+        assert self.game.current_player.is_white is False
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is True
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=3,
-                         board_type="One-step-to-check-for-black")
+                         board_type="Check in One for Black")
+        assert self.game.current_player.is_white is True
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is False
         del self.game
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=3,
-                         board_type="One-step-to-check-for-black")
+                         board_type="Check in One for Black")
         self.game.get_next_player_turn()
+        assert self.game.current_player.is_white is False
         self.game._move_service.get_computer_move_applied()
+        assert self.game.current_player.is_white is True
 
     def tearDown(self):
         del self.game
@@ -266,12 +282,16 @@ class ComputerMoveServiceTest(unittest.TestCase):
 
 class MoveGenerationServiceTest(unittest.TestCase):
     def setUp(self):
-        self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=2)
+        self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=2,
+                         board_type="Fail Castling")
 
     def test_move_generation(self):
-        square = self.game.board.get_square(1, 4)
+        square = self.game.board.get_square(8, 1)
         piece = square.piece
-        self.game._move_generation_service.get_all_queen_moves(piece, square)
+        moves = []
+        for move in self.game._move_generation_service.get_all_queen_moves(piece, square):
+            moves.append(move)
+        assert len(moves) == 21
 
     def tearDown(self):
         del self.game
@@ -280,16 +300,19 @@ class MoveGenerationServiceTest(unittest.TestCase):
 class EvaluationServiceTest(unittest.TestCase):
     def setUp(self):
         self.game = Game(white_player=Human(is_white=True), black_player=Human(is_white=False), depth=2,
-                         board_type="end-game-evaluation")
+                         board_type="End Game Evaluation")
 
     def test_end_game_evaluation(self):
-        self.game._evaluation_service.evaluate_move(self.game.board)
+        assert self.game._evaluation_service.evaluate_move(self.game.board) == 0
 
     def tearDown(self):
         del self.game
 
 
 class EntityTest(unittest.TestCase):
+    def setUp(self):
+        pass
+
     def test_square(self):
         square1 = Square(1, 1, Pawn(is_white=True))
         square2 = NoPiece()

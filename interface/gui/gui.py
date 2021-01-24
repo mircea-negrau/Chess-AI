@@ -62,7 +62,7 @@ class GUI:
                 self.get_move_sound_triggered()
                 self.get_game_drawn(self.selected_square)
                 self.get_screen_refreshed()
-                self.get_game_ending_manner()
+                self.get_game_ending_manner_displayed()
         input()
 
     def get_game_initialized(self):
@@ -95,7 +95,7 @@ class GUI:
     def get_click_event(self, event):
         is_mouse_click = event.type == pygame.MOUSEBUTTONDOWN
         if is_mouse_click:
-            file, rank = self.get_chessboard_position()
+            file, rank = self.get_chessboard_position(self.square_size, self.dimension)
             square_already_selected = self.selected_square == (file, rank)
             source_file, source_rank = None, None
 
@@ -105,7 +105,7 @@ class GUI:
             else:
                 self.selected_square = (file, rank)
                 self.clicked_squares.append(self.selected_square)
-                source_file, source_rank = self.get_source_move_coordinates()
+                source_file, source_rank = self.get_source_move_coordinates(self.clicked_squares)
 
                 source_square = self.game.board.get_square(source_rank, source_file)
                 is_empty_square = type(source_square.piece) == NoPiece
@@ -118,12 +118,12 @@ class GUI:
             move_is_ready = len(self.clicked_squares) == 2
             if move_is_ready:
                 self.get_move_performed(source_file, source_rank)
-                self.get_game_ending_manner()
+                self.get_game_ending_manner_displayed()
             return True
         return False
 
     def get_move_performed(self, source_file, source_rank):
-        destination_file, destination_rank = self.get_destination_move_coordinates()
+        destination_file, destination_rank = self.get_destination_move_coordinates(self.clicked_squares)
         player = self.game.current_player
         move_performed_successfully = self.game.get_human_move(player, source_rank, source_file,
                                                                destination_rank,
@@ -135,7 +135,7 @@ class GUI:
         self.get_screen_refreshed()
         self.get_click_history_reset()
 
-    def get_game_ending_manner(self):
+    def get_game_ending_manner_displayed(self):
         if self.game.game_status == "CHECKMATE":
             if not self.game.current_player.is_white:
                 self.get_text_drawn("White wins by checkmate!")
@@ -177,26 +177,6 @@ class GUI:
             self.screen.blit(surface, (
                 (move.move_to.file - 1) * self.square_size, (self.dimension - move.move_to.rank) * self.square_size))
 
-    def get_source_move_coordinates(self):
-        source_click = self.clicked_squares[0]
-        source_rank = source_click[1]
-        source_file = source_click[0]
-        return source_file, source_rank
-
-    def get_destination_move_coordinates(self):
-        destination_click = self.clicked_squares[1]
-        destination_rank = destination_click[1]
-        destination_file = destination_click[0]
-        return destination_file, destination_rank
-
-    def get_chessboard_position(self):
-        location = pygame.mouse.get_pos()
-        horizontal_location = location[0]
-        vertical_location = location[1]
-        file = horizontal_location // self.square_size + 1
-        rank = self.dimension - (vertical_location // self.square_size)
-        return file, rank
-
     def get_chessboard_position_from_square(self, file, rank):
         file_position = (file - 1) * self.square_size
         rank_position = (self.dimension - rank) * self.square_size
@@ -225,7 +205,7 @@ class GUI:
         chessboard = range(self.dimension)
         for rank in chessboard:
             for file in chessboard:
-                color = colors[((rank + file) % 2)]
+                color = colors[((rank + file + 1) % 2)]
                 pygame.draw.rect(self.screen, color,
                                  pygame.Rect(file * self.square_size, rank * self.square_size, self.square_size,
                                              self.square_size))
@@ -257,12 +237,13 @@ class GUI:
             file = (move.move_from.file - 1 + destination_file * frame / frame_count)
             self.get_board_drawn()
             self.get_pieces_drawn()
-            color = colors[(((int(move.move_to.rank) + int(move.move_to.file)) + 1) % 2)]
+            color = colors[((int(move.move_to.rank) + int(move.move_to.file)) % 2)]
             end_square = pygame.Rect((move.move_to.file - 1) * self.square_size,
                                      (self.dimension - move.move_to.rank) * self.square_size, self.square_size,
                                      self.square_size)
             pygame.draw.rect(self.screen, color, end_square)
-            if str(move.killed_piece) != "None":
+            piece_was_captured = str(move.killed_piece) != "None"
+            if piece_was_captured:
                 piece_to_add = str(move.killed_piece)
                 self.screen.blit(self.images[piece_to_add], end_square)
             piece = move.moved_piece
@@ -273,3 +254,26 @@ class GUI:
                                          self.square_size, self.square_size))
             pygame.display.flip()
             self.Clock.tick(600)
+
+    @staticmethod
+    def get_source_move_coordinates(clicked_squares):
+        source_click = clicked_squares[0]
+        source_rank = source_click[1]
+        source_file = source_click[0]
+        return source_file, source_rank
+
+    @staticmethod
+    def get_destination_move_coordinates(clicked_squares):
+        destination_click = clicked_squares[1]
+        destination_rank = destination_click[1]
+        destination_file = destination_click[0]
+        return destination_file, destination_rank
+
+    @staticmethod
+    def get_chessboard_position(square_size, dimension):
+        location = pygame.mouse.get_pos()
+        horizontal_location = location[0]
+        vertical_location = location[1]
+        file = horizontal_location // square_size + 1
+        rank = dimension - (vertical_location // square_size)
+        return file, rank

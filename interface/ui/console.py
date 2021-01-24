@@ -22,7 +22,10 @@ class Console:
     def __play(self):
         while self.__game.game_status == "ACTIVE":
             self.print_board(self.__game.board)
-            self.get_next_move_performed()
+            is_game_active = self.__game.get_game_status()
+            if is_game_active:
+                self.get_next_move_performed()
+        print(self.__game.game_status)
 
     def get_next_move_performed(self):
         if self.__game.current_player.is_human:

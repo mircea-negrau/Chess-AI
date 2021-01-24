@@ -1,3 +1,5 @@
+import pygame
+
 from domain.entities.board import Board
 from services.evaluation_service import EvaluationService
 from services.move_generation_service import MoveGenerationService
@@ -104,6 +106,9 @@ class Game:
         self._move_service.undo_move()
 
     def get_double_undo_performed(self):
+        """
+        Method to undo the last two moves that altered the chessboard.
+        """
         self._move_service.get_double_undo_performed()
 
     def get_game_status(self):

@@ -1,5 +1,6 @@
 from domain.entities.players import Computer, Human
 from interface.gui.gui import GUI
+from interface.gui.menu import GuiMenu
 from interface.ui.console import Console
 from services.chess_service import Game
 
@@ -24,10 +25,10 @@ class Program:
             print(error)
 
     def run(self):
-        # try:
+        try:
             self.__interface.run()
-        # except AttributeError:
-        #     print("Invalid settings configuration!")
+        except AttributeError:
+            print("Invalid settings configuration!")
 
     def get_settings(self):
         with open("settings/settings.properties", "r") as file:
@@ -72,4 +73,5 @@ class Program:
         if self.__interface == "ui":
             self.__interface = Console(self.__game)
         elif self.__interface == "gui":
-            self.__interface = GUI(self.__game, self.__screen_size)
+            del self.__game
+            self.__interface = GuiMenu(self.__screen_size)
