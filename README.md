@@ -21,8 +21,13 @@ Hence, more base value, more available squares to move to and better placement m
 Forced checkmate sequences are always prioritized.\
 Stalemates are always avoided when winning, but desired when losing. 
 
+https://user-images.githubusercontent.com/74305289/143059535-b3d19abe-0e27-4f27-9442-c7f4b3b5bb67.mp4
+
 ## Setup
 The game's settings can be changed in the settings.properties file.\
 Optimal depth: 4\
 Higher depth gives slower, more accurate moves.\
 Lower depth gives quicker, less accurate responses.
+
+
+
